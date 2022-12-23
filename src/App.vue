@@ -1,28 +1,95 @@
 <template>
-  <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <div class="wrapper">
+    <div class="wrapper-content">
+      <section>
+        <div class="container">
+          <h1>{{ title }}</h1>
+          <!--new-note-->
+          <div class="message" v-if="message">
+            <p>{{ message }}</p>
+          </div>
+          <div class="new-note">
+            <input type="text" v-model="note.title">
+            <textarea v-model="note.description"></textarea>
+            <button @click="addNewNote">Add new note</button>
+          </div>
+          <!--note list-->
+          <div class="notes">
+            <div class="note" v-for="(note, index) in notes" :key="index">
+              <div class="note-header">
+                <p>{{ note.title }}</p>
+              </div>
+              <div class="note-body">
+                <p>{{ note.description }}</p>
+                <span>{{ note.date }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </div>
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
 
 export default {
-  name: 'App',
-  components: {
-    HelloWorld
+  data() {
+    return {
+      title: 'Notes App',
+      message: null,
+      note: [
+        {
+          title: '',
+          description: '',
+        }
+      ],
+      notes: [
+        {
+          title: 'First note',
+          description: 'Some Description',
+          date: new Date().toLocaleString()
+        },
+        {
+          title: 'Second note',
+          description: 'Some Description',
+          date: new Date().toLocaleString()
+        },
+        {
+          title: 'Thirs note',
+          description: 'Some Description',
+          date: new Date().toLocaleString()
+        },
+      ]
+    }
+  },
+  methods: {
+    addNewNote () {
+      let { title, description } = this.note
+
+      if(title) {
+        this.notes.push({
+          title,
+          description,
+          date: new Date().toLocaleString()
+        })
+
+        this.note.title = ''
+        this.note.description = ''
+        this.message = null
+
+      } else {
+        this.message = 'This field can\'t be blank!'
+        return false
+      }
+    }
   }
 }
 </script>
 
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+<style scoped>
+.container {
+  max-width: 800px;
 }
 </style>
