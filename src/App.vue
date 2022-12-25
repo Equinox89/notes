@@ -7,18 +7,7 @@
 
           <Message v-if="message" :message="message"/>
           <NewNote :note="note" @addNewNote="addNewNote"/>
-          <!--note list-->
-          <div class="notes">
-            <div class="note" v-for="(note, index) in notes" :key="index">
-              <div class="note-header">
-                <p>{{ note.title }}</p>
-              </div>
-              <div class="note-body">
-                <p>{{ note.description }}</p>
-                <span>{{ note.date }}</span>
-              </div>
-            </div>
-          </div>
+          <Notes :notes="notes" />
         </div>
       </section>
 
@@ -30,9 +19,10 @@
 
 import Message from "@/components/Message.vue";
 import NewNote from "@/components/NewNote.vue";
+import Notes from "@/components/Notes.vue";
 
 export default {
-  components: {NewNote, Message},
+  components: {Notes, NewNote, Message},
   data() {
     return {
       title: 'Notes App',
