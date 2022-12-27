@@ -7,7 +7,7 @@
 
           <Message v-if="message" :message="message"/>
           <NewNote :note="note" @addNewNote="addNewNote"/>
-          <Notes :notes="notes" />
+          <Notes :notes="notes" @remove="removeNote"/>
         </div>
       </section>
 
@@ -69,6 +69,9 @@ export default {
         this.message = 'This field can\'t be blank!'
         return false
       }
+    },
+    removeNote(index) {
+      this.notes.splice(index, 1)
     }
   }
 }
