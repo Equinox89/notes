@@ -1,7 +1,7 @@
 <template>
   <!--note list-->
   <div class="notes">
-    <div class="note" v-for="(note, index) in notes" :key="index">
+    <div class="note" :class="{ full: !grid }" v-for="(note, index) in notes" :key="index">
       <div class="note-header">
         <p>{{ note.title }}</p>
         <p style="cursor: pointer" @click="removeNote(index)">x</p>
@@ -19,6 +19,10 @@ export default {
   props: {
     notes: {
       type: Array,
+      required: true
+    },
+    grid: {
+      type: Boolean,
       required: true
     }
   },
@@ -46,6 +50,11 @@ export default {
     margin-bottom: 16px;
     background-color: #ffffff;
     border-radius: 8px;
+    transition: all ease .2s;
+
+    &.full {
+      width: 100%;
+    }
   }
 
   .note-header {
@@ -56,6 +65,20 @@ export default {
     p {
       font-size: 24px;
       color: #0949ec;
+    }
+
+    svg {
+      margin-right: 8px;
+      color: #999999;
+      cursor: pointer;
+
+      &.active {
+        color: #0949ec;
+      }
+
+      &:last-child {
+        margin-right: 0;
+      }
     }
   }
   .note-body {
