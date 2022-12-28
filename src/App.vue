@@ -7,6 +7,7 @@
           <NewNote :note="note" @addNewNote="addNewNote"/>
           <div class="note-header">
             <h1>{{ title }}</h1>
+            <Search :value="search" @search="search = $event"/>
             <div>
               <svg :class="{ active:grid }" @click="grid = true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" ><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect>
               </svg>
@@ -14,7 +15,7 @@
               </svg>
             </div>
           </div>
-          <Notes :notes="notes" :grid="grid" @remove="removeNote"/>
+          <Notes :notes="notesFilter" :grid="grid" @remove="removeNote"/>
         </div>
       </section>
 
@@ -27,12 +28,14 @@
 import Message from "@/components/Message.vue";
 import NewNote from "@/components/NewNote.vue";
 import Notes from "@/components/Notes.vue";
+import Search from "@/components/Search.vue";
 
 export default {
-  components: {Notes, NewNote, Message},
+  components: {Search, Notes, NewNote, Message},
   data() {
     return {
       title: 'Notes App',
+      search: '',
       message: null,
       grid: true,
       note: {
@@ -80,6 +83,23 @@ export default {
     },
     removeNote(index) {
       this.notes.splice(index, 1)
+    }
+  },
+  computed: {
+    notesFilter() {
+      let array = this.notes,
+          search = this.search
+      if(!search) return array
+      // Small
+      search.trim().toLowerCase()
+      // Filter
+      array = array.filter((item) => {
+        if(item.title.toLowerCase().indexOf(search) !== -1) {
+          return item
+        }
+      })
+      // Error
+      return array
     }
   }
 }
